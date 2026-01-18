@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { Heart, ArrowRight, Check } from "lucide-react";
 import { useLocalSession } from "@/hooks/useLocalSession";
-import { TurnIndicator, AIHelper } from "@/components/wizard";
+import { TurnIndicator } from "@/components/wizard";
 
 export const Route = createFileRoute("/session/$sessionId/approach")({
   component: ApproachPage,

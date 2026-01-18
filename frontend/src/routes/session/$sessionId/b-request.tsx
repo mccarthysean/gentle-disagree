@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { HandHeart, ArrowRight, Check } from "lucide-react";
+import { HandHeart, Check } from "lucide-react";
 import { useLocalSession } from "@/hooks/useLocalSession";
 import { TurnIndicator, AIHelper } from "@/components/wizard";
 
