@@ -2,6 +2,7 @@ import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { CheckCircle2, Circle, Clock, ArrowRight, Pause } from "lucide-react";
 import { useLocalSession } from "@/hooks/useLocalSession";
+import { TurnIndicator, AIHelper } from "@/components/wizard";
 
 export const Route = createFileRoute("/session/$sessionId/readiness")({
   component: ReadinessPage,
@@ -10,11 +11,20 @@ export const Route = createFileRoute("/session/$sessionId/readiness")({
 function ReadinessPage() {
   const { sessionId } = Route.useParams();
   const navigate = useNavigate();
-  const { session, loading, currentPartnerName, updateCurrentPartner } =
-    useLocalSession(sessionId);
+  const {
+    session,
+    loading,
+    currentPartnerName,
+    currentPartnerLetter,
+    otherPartnerName,
+    updatePartnerA,
+    nextStep,
+    getStepInfo,
+  } = useLocalSession(sessionId);
 
   const [isCalm, setIsCalm] = useState(false);
   const [isRelaxed, setIsRelaxed] = useState(false);
+  const [rescheduleMessage, setRescheduleMessage] = useState("");
 
   if (loading) {
     return (
@@ -38,44 +48,31 @@ function ReadinessPage() {
   const isReady = isCalm && isRelaxed;
 
   const handleContinue = () => {
-    updateCurrentPartner({ readinessCheck: true });
-    navigate({
-      to: "/session/$sessionId/approach",
-      params: { sessionId },
-    });
+    updatePartnerA({ readinessCheck: true });
+    const result = nextStep();
+    if (result?.nextRoute) {
+      navigate({ to: result.nextRoute });
+    }
   };
+
+  const stepInfo = getStepInfo();
 
   return (
     <div className="max-w-md mx-auto space-y-6 animate-fade-in">
-      {/* Progress */}
-      <div className="flex items-center justify-center gap-2">
-        {[1, 2, 3, 4, 5].map((step) => (
-          <div
-            key={step}
-            className={`progress-step ${
-              step === 1 ? "progress-step-active" : ""
-            }`}
-          />
-        ))}
-      </div>
-
-      {/* Partner Badge */}
-      <div className="text-center">
-        <span
-          className={`partner-badge ${
-            session.currentPartner === "A" ? "partner-badge-a" : "partner-badge-b"
-          }`}
-        >
-          {session.currentPartner}
-        </span>
-        <p className="mt-2 text-text-secondary">
-          <strong>{currentPartnerName}</strong>'s turn
-        </p>
-      </div>
+      {/* Turn Indicator */}
+      <TurnIndicator
+        partnerName={currentPartnerName}
+        partnerLetter={currentPartnerLetter}
+        currentStep={session.currentStep}
+        totalSteps={stepInfo.totalSteps}
+        stepTitle={stepInfo.stepTitle}
+        nextStepHint={stepInfo.nextHint || undefined}
+        phase="sharing"
+      />
 
       {/* Header */}
       <section className="text-center space-y-2">
-        <h1 className="text-2xl">Step 1: Readiness Check</h1>
+        <h1 className="text-2xl">Readiness Check</h1>
         <p className="text-text-secondary">
           Before we begin, let's make sure this is a good moment for both of you.
         </p>
@@ -146,6 +143,20 @@ function ReadinessPage() {
           Not Right Now – Let's Reschedule
         </button>
       </section>
+
+      {/* AI Helper for rescheduling */}
+      <AIHelper
+        type="reschedule"
+        onResult={(result) => setRescheduleMessage(result)}
+        partnerName={otherPartnerName}
+      />
+
+      {rescheduleMessage && (
+        <div className="card-soft">
+          <p className="text-sm text-text-muted mb-2">Suggested phrase:</p>
+          <p className="text-text-primary italic">"{rescheduleMessage}"</p>
+        </div>
+      )}
 
       {/* Pause phrase */}
       <div className="text-center">

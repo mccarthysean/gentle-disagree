@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { Heart, ArrowRight, Check } from "lucide-react";
 import { useLocalSession } from "@/hooks/useLocalSession";
+import { TurnIndicator, AIHelper } from "@/components/wizard";
 
 export const Route = createFileRoute("/session/$sessionId/approach")({
   component: ApproachPage,
@@ -28,8 +29,15 @@ const REMINDERS = [
 function ApproachPage() {
   const { sessionId } = Route.useParams();
   const navigate = useNavigate();
-  const { session, loading, currentPartnerName, otherPartnerName } =
-    useLocalSession(sessionId);
+  const {
+    session,
+    loading,
+    currentPartnerName,
+    currentPartnerLetter,
+    otherPartnerName,
+    nextStep,
+    getStepInfo,
+  } = useLocalSession(sessionId);
 
   if (loading) {
     return (
@@ -51,47 +59,30 @@ function ApproachPage() {
   }
 
   const handleContinue = () => {
-    navigate({
-      to: "/session/$sessionId/i-statement",
-      params: { sessionId },
-    });
+    const result = nextStep();
+    if (result?.nextRoute) {
+      navigate({ to: result.nextRoute });
+    }
   };
+
+  const stepInfo = getStepInfo();
 
   return (
     <div className="max-w-md mx-auto space-y-6 animate-fade-in">
-      {/* Progress */}
-      <div className="flex items-center justify-center gap-2">
-        {[1, 2, 3, 4, 5].map((step) => (
-          <div
-            key={step}
-            className={`progress-step ${
-              step === 2
-                ? "progress-step-active"
-                : step < 2
-                  ? "progress-step-completed"
-                  : ""
-            }`}
-          />
-        ))}
-      </div>
-
-      {/* Partner Badge */}
-      <div className="text-center">
-        <span
-          className={`partner-badge ${
-            session.currentPartner === "A" ? "partner-badge-a" : "partner-badge-b"
-          }`}
-        >
-          {session.currentPartner}
-        </span>
-        <p className="mt-2 text-text-secondary">
-          <strong>{currentPartnerName}</strong>'s turn
-        </p>
-      </div>
+      {/* Turn Indicator */}
+      <TurnIndicator
+        partnerName={currentPartnerName}
+        partnerLetter={currentPartnerLetter}
+        currentStep={session.currentStep}
+        totalSteps={stepInfo.totalSteps}
+        stepTitle={stepInfo.stepTitle}
+        nextStepHint={stepInfo.nextHint || undefined}
+        phase="sharing"
+      />
 
       {/* Header */}
       <section className="text-center space-y-2">
-        <h1 className="text-2xl">Step 2: Gentle Approach</h1>
+        <h1 className="text-2xl">Gentle Approach</h1>
         <p className="text-text-secondary">
           Remember these guidelines as you share your feelings with{" "}
           {otherPartnerName}.

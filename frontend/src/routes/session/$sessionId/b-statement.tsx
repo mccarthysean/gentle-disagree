@@ -1,18 +1,12 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import {
-  MessageCircle,
-  ArrowRight,
-  Sparkles,
-  Lightbulb,
-  Loader2,
-} from "lucide-react";
+import { MessageCircle, ArrowRight, Sparkles, Loader2 } from "lucide-react";
 import { useLocalSession } from "@/hooks/useLocalSession";
-import { reframeStatement } from "@/lib/ai";
 import { TurnIndicator } from "@/components/wizard";
+import { reframeStatement } from "@/lib/ai";
 
-export const Route = createFileRoute("/session/$sessionId/i-statement")({
-  component: IStatementPage,
+export const Route = createFileRoute("/session/$sessionId/b-statement")({
+  component: BStatementPage,
 });
 
 const EMOTIONS = [
@@ -30,7 +24,7 @@ const EMOTIONS = [
   "stressed",
 ];
 
-function IStatementPage() {
+function BStatementPage() {
   const { sessionId } = Route.useParams();
   const navigate = useNavigate();
   const {
@@ -39,13 +33,17 @@ function IStatementPage() {
     currentPartnerName,
     currentPartnerLetter,
     otherPartnerName,
-    updatePartnerA,
+    updatePartnerB,
     nextStep,
     getStepInfo,
   } = useLocalSession(sessionId);
 
-  const [selectedEmotion, setSelectedEmotion] = useState("");
-  const [situation, setSituation] = useState("");
+  const [selectedEmotion, setSelectedEmotion] = useState(
+    session?.partnerBData?.iStatement?.emotion || ""
+  );
+  const [situation, setSituation] = useState(
+    session?.partnerBData?.iStatement?.situation || ""
+  );
 
   // AI assistance state
   const [rawStatement, setRawStatement] = useState("");
@@ -80,7 +78,7 @@ function IStatementPage() {
   const canContinue = selectedEmotion && situation.trim().length > 0;
 
   const handleContinue = () => {
-    updatePartnerA({
+    updatePartnerB({
       iStatement: {
         emotion: selectedEmotion,
         situation: situation.trim(),
@@ -92,8 +90,6 @@ function IStatementPage() {
     }
   };
 
-  const stepInfo = getStepInfo();
-
   const handleAIReframe = async () => {
     if (!rawStatement.trim()) return;
 
@@ -102,8 +98,6 @@ function IStatementPage() {
 
     try {
       const result = await reframeStatement(rawStatement);
-
-      // Apply the AI suggestions
       setSelectedEmotion(result.emotion);
       setSituation(result.situation);
       setShowAIHelper(false);
@@ -117,13 +111,15 @@ function IStatementPage() {
     }
   };
 
+  const stepInfo = getStepInfo();
+
   return (
     <div className="max-w-md mx-auto space-y-6 animate-fade-in">
       {/* Turn Indicator */}
       <TurnIndicator
         partnerName={currentPartnerName}
         partnerLetter={currentPartnerLetter}
-        currentStep={session.currentStep}
+        currentStep={stepInfo.displayStep || session.currentStep + 2}
         totalSteps={stepInfo.totalSteps}
         stepTitle={stepInfo.stepTitle}
         nextStepHint={stepInfo.nextHint || undefined}
@@ -132,21 +128,30 @@ function IStatementPage() {
 
       {/* Header */}
       <section className="text-center space-y-2">
-        <h1 className="text-2xl">I-Statement</h1>
+        <h1 className="text-2xl">Your Turn to Share</h1>
         <p className="text-text-secondary">
-          Share how you feel without blame. Focus on the impact, not fault.
+          Now it's your turn, {currentPartnerName}. Share how you feel about this
+          situation.
         </p>
       </section>
+
+      {/* Context reminder */}
+      <div className="card-soft text-sm">
+        <p className="text-text-muted">
+          You've reflected on {otherPartnerName}'s feelings and responded to their
+          request. Now share your own perspective.
+        </p>
+      </div>
 
       {/* Example transformation */}
       <div className="card-soft text-sm space-y-2">
         <div className="flex items-center gap-2 text-error">
           <span className="font-medium">✕</span>
-          <span>"You're so closed off. We never talk."</span>
+          <span>"You're being unfair about this."</span>
         </div>
         <div className="flex items-center gap-2 text-success">
           <span className="font-medium">✓</span>
-          <span>"I feel lonely when we don't have time to talk."</span>
+          <span>"I feel overwhelmed when there are many changes at once."</span>
         </div>
       </div>
 
@@ -172,13 +177,11 @@ function IStatementPage() {
           <textarea
             value={rawStatement}
             onChange={(e) => setRawStatement(e.target.value)}
-            placeholder="e.g., You never listen to me, you're always on your phone..."
+            placeholder="e.g., I feel like my side isn't being heard..."
             className="textarea"
             rows={3}
           />
-          {aiError && (
-            <p className="text-sm text-error">{aiError}</p>
-          )}
+          {aiError && <p className="text-sm text-error">{aiError}</p>}
           <div className="flex gap-2">
             <button
               onClick={() => {
@@ -247,7 +250,7 @@ function IStatementPage() {
           id="situation"
           value={situation}
           onChange={(e) => setSituation(e.target.value)}
-          placeholder="e.g., we don't have time to talk in the evenings"
+          placeholder="e.g., plans change without much notice"
           className="textarea"
           rows={3}
         />
@@ -261,29 +264,10 @@ function IStatementPage() {
         </section>
       )}
 
-      {/* Gottman phrases */}
-      <section className="space-y-2">
-        <p className="text-sm text-text-muted text-center flex items-center justify-center gap-1">
-          <Lightbulb className="w-4 h-4" />
-          Other ways to express yourself:
-        </p>
-        <div className="flex flex-wrap gap-2 justify-center">
-          <button className="phrase-chip text-xs">
-            "I'm getting scared"
-          </button>
-          <button className="phrase-chip text-xs">
-            "That hurt my feelings"
-          </button>
-          <button className="phrase-chip text-xs">
-            "I feel like you don't understand me"
-          </button>
-        </div>
-      </section>
-
       {/* Affirmation */}
       <div className="affirmation">
         <MessageCircle className="w-4 h-4" />
-        <span>Expressing feelings takes courage. You're doing great.</span>
+        <span>Both perspectives matter in finding resolution.</span>
       </div>
 
       {/* Continue */}
@@ -299,16 +283,6 @@ function IStatementPage() {
           <ArrowRight className="w-5 h-5" />
         </button>
       </section>
-
-      {/* Listener phrase */}
-      <div className="text-center">
-        <p className="text-sm text-text-muted mb-2">
-          For {otherPartnerName} (the listener):
-        </p>
-        <button className="phrase-chip">
-          "I'm curious why you feel that way"
-        </button>
-      </div>
     </div>
   );
 }

@@ -2,6 +2,7 @@ import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { Target, ArrowRight, Lightbulb } from "lucide-react";
 import { useLocalSession } from "@/hooks/useLocalSession";
+import { TurnIndicator, AIHelper } from "@/components/wizard";
 
 export const Route = createFileRoute("/session/$sessionId/problem")({
   component: ProblemPage,
@@ -14,8 +15,11 @@ function ProblemPage() {
     session,
     loading,
     currentPartnerName,
+    currentPartnerLetter,
     otherPartnerName,
-    updateCurrentPartner,
+    updatePartnerA,
+    nextStep,
+    getStepInfo,
   } = useLocalSession(sessionId);
 
   const [problem, setProblem] = useState("");
@@ -42,50 +46,33 @@ function ProblemPage() {
   const canContinue = problem.trim().length > 0;
 
   const handleContinue = () => {
-    updateCurrentPartner({
+    updatePartnerA({
       problemDescription: problem.trim(),
     });
-    navigate({
-      to: "/session/$sessionId/request",
-      params: { sessionId },
-    });
+    const result = nextStep();
+    if (result?.nextRoute) {
+      navigate({ to: result.nextRoute });
+    }
   };
+
+  const stepInfo = getStepInfo();
 
   return (
     <div className="max-w-md mx-auto space-y-6 animate-fade-in">
-      {/* Progress */}
-      <div className="flex items-center justify-center gap-2">
-        {[1, 2, 3, 4, 5].map((step) => (
-          <div
-            key={step}
-            className={`progress-step ${
-              step === 4
-                ? "progress-step-active"
-                : step < 4
-                  ? "progress-step-completed"
-                  : ""
-            }`}
-          />
-        ))}
-      </div>
-
-      {/* Partner Badge */}
-      <div className="text-center">
-        <span
-          className={`partner-badge ${
-            session.currentPartner === "A" ? "partner-badge-a" : "partner-badge-b"
-          }`}
-        >
-          {session.currentPartner}
-        </span>
-        <p className="mt-2 text-text-secondary">
-          <strong>{currentPartnerName}</strong>'s turn
-        </p>
-      </div>
+      {/* Turn Indicator */}
+      <TurnIndicator
+        partnerName={currentPartnerName}
+        partnerLetter={currentPartnerLetter}
+        currentStep={session.currentStep}
+        totalSteps={stepInfo.totalSteps}
+        stepTitle={stepInfo.stepTitle}
+        nextStepHint={stepInfo.nextHint || undefined}
+        phase="sharing"
+      />
 
       {/* Header */}
       <section className="text-center space-y-2">
-        <h1 className="text-2xl">Step 4: Problem Description</h1>
+        <h1 className="text-2xl">Problem Description</h1>
         <p className="text-text-secondary">
           Describe one specific situation. Keep it focused and factual.
         </p>
@@ -106,6 +93,13 @@ function ProblemPage() {
           <span>Use facts, not accusations</span>
         </div>
       </section>
+
+      {/* AI Helper */}
+      <AIHelper
+        type="problem"
+        onResult={(result) => setProblem(result)}
+        partnerName={otherPartnerName}
+      />
 
       {/* Input */}
       <section className="card space-y-4">

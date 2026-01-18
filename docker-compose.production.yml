@@ -9,9 +9,17 @@ services:
         order: start-first
       labels:
         - traefik.enable=true
+        - traefik.constraint-label=traefik-public
+        - traefik.docker.network=traefik-public
+        # HTTP router - redirect to HTTPS
+        - traefik.http.routers.gentle-disagree-http.rule=Host(`gentledisagree.space`) || Host(`www.gentledisagree.space`)
+        - traefik.http.routers.gentle-disagree-http.entrypoints=http
+        - traefik.http.routers.gentle-disagree-http.middlewares=https-redirect
+        # HTTPS router
         - traefik.http.routers.gentle-disagree.rule=Host(`gentledisagree.space`) || Host(`www.gentledisagree.space`)
-        - traefik.http.routers.gentle-disagree.entrypoints=websecure
-        - traefik.http.routers.gentle-disagree.tls.certresolver=letsencrypt
+        - traefik.http.routers.gentle-disagree.entrypoints=https
+        - traefik.http.routers.gentle-disagree.tls=true
+        - traefik.http.routers.gentle-disagree.tls.certresolver=le
         - traefik.http.services.gentle-disagree.loadbalancer.server.port=3000
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000/"]
@@ -37,9 +45,17 @@ services:
         order: start-first
       labels:
         - traefik.enable=true
+        - traefik.constraint-label=traefik-public
+        - traefik.docker.network=traefik-public
+        # HTTP router - redirect to HTTPS
+        - traefik.http.routers.gentle-disagree-api-http.rule=Host(`api.gentledisagree.space`)
+        - traefik.http.routers.gentle-disagree-api-http.entrypoints=http
+        - traefik.http.routers.gentle-disagree-api-http.middlewares=https-redirect
+        # HTTPS router
         - traefik.http.routers.gentle-disagree-api.rule=Host(`api.gentledisagree.space`)
-        - traefik.http.routers.gentle-disagree-api.entrypoints=websecure
-        - traefik.http.routers.gentle-disagree-api.tls.certresolver=letsencrypt
+        - traefik.http.routers.gentle-disagree-api.entrypoints=https
+        - traefik.http.routers.gentle-disagree-api.tls=true
+        - traefik.http.routers.gentle-disagree-api.tls.certresolver=le
         - traefik.http.services.gentle-disagree-api.loadbalancer.server.port=8000
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]

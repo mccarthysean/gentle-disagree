@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { PartyPopper, Heart, MessageCircle, Home, Trash2 } from "lucide-react";
+import { PartyPopper, Heart, MessageCircle, Home, Trash2, ArrowDown } from "lucide-react";
 import { useLocalSession } from "@/hooks/useLocalSession";
 import { deleteSession } from "@/lib/storage";
 import { useNavigate } from "@tanstack/react-router";
@@ -39,6 +39,8 @@ function SummaryPage() {
     }
   };
 
+  const { partnerAData, partnerBResponses, partnerBData } = session;
+
   return (
     <div className="max-w-md mx-auto space-y-6 animate-fade-in">
       {/* Celebration */}
@@ -48,71 +50,127 @@ function SummaryPage() {
         </div>
         <h1 className="text-2xl mb-2">Well Done!</h1>
         <p className="text-text-secondary">
-          You've completed a Soft Startup conversation together.
+          You've completed a Gentle Disagree conversation together.
         </p>
       </section>
 
-      {/* Partner A's summary */}
+      {/* Partner A shared */}
       <section className="card space-y-3">
         <div className="flex items-center gap-2">
           <span className="partner-badge partner-badge-a">A</span>
-          <h2 className="text-lg font-semibold">{session.partnerA}</h2>
+          <h2 className="text-lg font-semibold">{session.partnerA} shared</h2>
         </div>
 
-        <div className="space-y-2 text-sm">
-          <div>
-            <p className="text-text-muted">Feeling:</p>
-            <p className="text-text-primary">
-              "I feel {session.partnerAData.iStatement.emotion} when{" "}
-              {session.partnerAData.iStatement.situation}"
-            </p>
-          </div>
-
-          {session.partnerAData.problemDescription && (
-            <div>
-              <p className="text-text-muted">Situation:</p>
-              <p className="text-text-primary">
-                {session.partnerAData.problemDescription}
+        <div className="space-y-3 text-sm">
+          {partnerAData.intentAcknowledgment && (
+            <div className="bg-mint/20 rounded-lg p-3">
+              <p className="text-text-muted text-xs mb-1">Acknowledged good intentions:</p>
+              <p className="text-text-primary italic">
+                "{partnerAData.intentAcknowledgment}"
               </p>
             </div>
           )}
 
           <div>
-            <p className="text-text-muted">Request:</p>
-            <p className="text-text-primary">{session.partnerAData.request}</p>
+            <p className="text-text-muted text-xs">Feeling:</p>
+            <p className="text-text-primary">
+              "I feel <strong>{partnerAData.iStatement.emotion}</strong> when{" "}
+              {partnerAData.iStatement.situation}"
+            </p>
+          </div>
+
+          {partnerAData.problemDescription && (
+            <div>
+              <p className="text-text-muted text-xs">About:</p>
+              <p className="text-text-primary">{partnerAData.problemDescription}</p>
+            </div>
+          )}
+
+          <div>
+            <p className="text-text-muted text-xs">Request:</p>
+            <p className="text-text-primary">"{partnerAData.request}"</p>
           </div>
         </div>
       </section>
 
-      {/* Partner B's summary */}
+      {/* Flow arrow */}
+      <div className="flex justify-center">
+        <ArrowDown className="w-6 h-6 text-sage/50" />
+      </div>
+
+      {/* Partner B responded */}
       <section className="card space-y-3">
         <div className="flex items-center gap-2">
           <span className="partner-badge partner-badge-b">B</span>
-          <h2 className="text-lg font-semibold">{session.partnerB}</h2>
+          <h2 className="text-lg font-semibold">{session.partnerB} responded</h2>
         </div>
 
-        <div className="space-y-2 text-sm">
-          <div>
-            <p className="text-text-muted">Feeling:</p>
-            <p className="text-text-primary">
-              "I feel {session.partnerBData.iStatement.emotion} when{" "}
-              {session.partnerBData.iStatement.situation}"
-            </p>
-          </div>
-
-          {session.partnerBData.problemDescription && (
+        <div className="space-y-3 text-sm">
+          {partnerBResponses.reflection && (
             <div>
-              <p className="text-text-muted">Situation:</p>
-              <p className="text-text-primary">
-                {session.partnerBData.problemDescription}
+              <p className="text-text-muted text-xs">Reflection:</p>
+              <p className="text-text-primary italic">
+                "{partnerBResponses.reflection}"
               </p>
             </div>
           )}
 
-          <div>
-            <p className="text-text-muted">Request:</p>
-            <p className="text-text-primary">{session.partnerBData.request}</p>
-          </div>
+          {partnerBResponses.acknowledgment && (
+            <div>
+              <p className="text-text-muted text-xs">
+                Response to request
+                {partnerBResponses.acknowledgmentType && (
+                  <span className="ml-1">
+                    (
+                    {partnerBResponses.acknowledgmentType === "accept"
+                      ? "accepted"
+                      : partnerBResponses.acknowledgmentType === "discuss"
+                        ? "wants to discuss"
+                        : "proposed alternative"}
+                    )
+                  </span>
+                )}
+                :
+              </p>
+              <p className="text-text-primary">"{partnerBResponses.acknowledgment}"</p>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* Flow arrow */}
+      <div className="flex justify-center">
+        <ArrowDown className="w-6 h-6 text-sage/50" />
+      </div>
+
+      {/* Partner B shared */}
+      <section className="card space-y-3">
+        <div className="flex items-center gap-2">
+          <span className="partner-badge partner-badge-b">B</span>
+          <h2 className="text-lg font-semibold">{session.partnerB} shared</h2>
+        </div>
+
+        <div className="space-y-3 text-sm">
+          {partnerBData.iStatement.emotion && partnerBData.iStatement.situation && (
+            <div>
+              <p className="text-text-muted text-xs">Feeling:</p>
+              <p className="text-text-primary">
+                "I feel <strong>{partnerBData.iStatement.emotion}</strong> when{" "}
+                {partnerBData.iStatement.situation}"
+              </p>
+            </div>
+          )}
+
+          {partnerBData.request ? (
+            <div>
+              <p className="text-text-muted text-xs">Request:</p>
+              <p className="text-text-primary">"{partnerBData.request}"</p>
+            </div>
+          ) : (
+            <p className="text-text-muted text-xs italic">
+              No additional request made
+            </p>
+          )}
         </div>
       </section>
 

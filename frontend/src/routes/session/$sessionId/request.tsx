@@ -2,6 +2,7 @@ import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { HandHeart, ArrowRight, Lightbulb, Users } from "lucide-react";
 import { useLocalSession } from "@/hooks/useLocalSession";
+import { TurnIndicator, AIHelper } from "@/components/wizard";
 
 export const Route = createFileRoute("/session/$sessionId/request")({
   component: RequestPage,
@@ -21,9 +22,11 @@ function RequestPage() {
     session,
     loading,
     currentPartnerName,
+    currentPartnerLetter,
     otherPartnerName,
-    updateCurrentPartner,
+    updatePartnerA,
     nextStep,
+    getStepInfo,
   } = useLocalSession(sessionId);
 
   const [request, setRequest] = useState("");
@@ -50,23 +53,16 @@ function RequestPage() {
   const canContinue = request.trim().length > 0;
 
   const handleComplete = () => {
-    updateCurrentPartner({
+    updatePartnerA({
       request: request.trim(),
     });
 
-    const updated = nextStep();
+    const result = nextStep();
 
-    // If partner A just finished, go to transition screen
-    if (updated && updated.currentPartner === "B" && updated.currentStep === 1) {
+    if (result?.nextRoute) {
+      // Navigate to the next route determined by the state machine
       navigate({
-        to: "/session/$sessionId/transition",
-        params: { sessionId },
-      });
-    } else if (updated && updated.status === "completed") {
-      // Both partners are done
-      navigate({
-        to: "/session/$sessionId/summary",
-        params: { sessionId },
+        to: result.nextRoute,
       });
     }
   };
@@ -75,41 +71,24 @@ function RequestPage() {
     setRequest(starter + " ");
   };
 
+  const stepInfo = getStepInfo();
+
   return (
     <div className="max-w-md mx-auto space-y-6 animate-fade-in">
-      {/* Progress */}
-      <div className="flex items-center justify-center gap-2">
-        {[1, 2, 3, 4, 5].map((step) => (
-          <div
-            key={step}
-            className={`progress-step ${
-              step === 5
-                ? "progress-step-active"
-                : step < 5
-                  ? "progress-step-completed"
-                  : ""
-            }`}
-          />
-        ))}
-      </div>
-
-      {/* Partner Badge */}
-      <div className="text-center">
-        <span
-          className={`partner-badge ${
-            session.currentPartner === "A" ? "partner-badge-a" : "partner-badge-b"
-          }`}
-        >
-          {session.currentPartner}
-        </span>
-        <p className="mt-2 text-text-secondary">
-          <strong>{currentPartnerName}</strong>'s turn
-        </p>
-      </div>
+      {/* Turn Indicator */}
+      <TurnIndicator
+        partnerName={currentPartnerName}
+        partnerLetter={currentPartnerLetter}
+        currentStep={session.currentStep}
+        totalSteps={stepInfo.totalSteps}
+        stepTitle={stepInfo.stepTitle}
+        nextStepHint={stepInfo.nextHint || undefined}
+        phase="sharing"
+      />
 
       {/* Header */}
       <section className="text-center space-y-2">
-        <h1 className="text-2xl">Step 5: Respectful Request</h1>
+        <h1 className="text-2xl">Respectful Request</h1>
         <p className="text-text-secondary">
           What would help you feel better? Make a gentle request to{" "}
           {otherPartnerName}.
@@ -133,6 +112,13 @@ function RequestPage() {
           ))}
         </div>
       </section>
+
+      {/* AI Helper */}
+      <AIHelper
+        type="request"
+        onResult={(result) => setRequest(result)}
+        partnerName={otherPartnerName}
+      />
 
       {/* Input */}
       <section className="card space-y-4">

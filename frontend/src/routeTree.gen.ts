@@ -16,10 +16,15 @@ import { Route as SessionNewRouteImport } from './routes/session/new'
 import { Route as SessionSessionIdTransitionRouteImport } from './routes/session/$sessionId/transition'
 import { Route as SessionSessionIdSummaryRouteImport } from './routes/session/$sessionId/summary'
 import { Route as SessionSessionIdRequestRouteImport } from './routes/session/$sessionId/request'
+import { Route as SessionSessionIdReflectRouteImport } from './routes/session/$sessionId/reflect'
 import { Route as SessionSessionIdReadinessRouteImport } from './routes/session/$sessionId/readiness'
 import { Route as SessionSessionIdProblemRouteImport } from './routes/session/$sessionId/problem'
+import { Route as SessionSessionIdIntentRouteImport } from './routes/session/$sessionId/intent'
 import { Route as SessionSessionIdIStatementRouteImport } from './routes/session/$sessionId/i-statement'
+import { Route as SessionSessionIdBStatementRouteImport } from './routes/session/$sessionId/b-statement'
+import { Route as SessionSessionIdBRequestRouteImport } from './routes/session/$sessionId/b-request'
 import { Route as SessionSessionIdApproachRouteImport } from './routes/session/$sessionId/approach'
+import { Route as SessionSessionIdAcknowledgeRouteImport } from './routes/session/$sessionId/acknowledge'
 
 const HistoryRoute = HistoryRouteImport.update({
   id: '/history',
@@ -57,6 +62,11 @@ const SessionSessionIdRequestRoute = SessionSessionIdRequestRouteImport.update({
   path: '/session/$sessionId/request',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SessionSessionIdReflectRoute = SessionSessionIdReflectRouteImport.update({
+  id: '/session/$sessionId/reflect',
+  path: '/session/$sessionId/reflect',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SessionSessionIdReadinessRoute =
   SessionSessionIdReadinessRouteImport.update({
     id: '/session/$sessionId/readiness',
@@ -68,10 +78,27 @@ const SessionSessionIdProblemRoute = SessionSessionIdProblemRouteImport.update({
   path: '/session/$sessionId/problem',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SessionSessionIdIntentRoute = SessionSessionIdIntentRouteImport.update({
+  id: '/session/$sessionId/intent',
+  path: '/session/$sessionId/intent',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SessionSessionIdIStatementRoute =
   SessionSessionIdIStatementRouteImport.update({
     id: '/session/$sessionId/i-statement',
     path: '/session/$sessionId/i-statement',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const SessionSessionIdBStatementRoute =
+  SessionSessionIdBStatementRouteImport.update({
+    id: '/session/$sessionId/b-statement',
+    path: '/session/$sessionId/b-statement',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const SessionSessionIdBRequestRoute =
+  SessionSessionIdBRequestRouteImport.update({
+    id: '/session/$sessionId/b-request',
+    path: '/session/$sessionId/b-request',
     getParentRoute: () => rootRouteImport,
   } as any)
 const SessionSessionIdApproachRoute =
@@ -80,16 +107,27 @@ const SessionSessionIdApproachRoute =
     path: '/session/$sessionId/approach',
     getParentRoute: () => rootRouteImport,
   } as any)
+const SessionSessionIdAcknowledgeRoute =
+  SessionSessionIdAcknowledgeRouteImport.update({
+    id: '/session/$sessionId/acknowledge',
+    path: '/session/$sessionId/acknowledge',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/history': typeof HistoryRoute
   '/session/new': typeof SessionNewRoute
+  '/session/$sessionId/acknowledge': typeof SessionSessionIdAcknowledgeRoute
   '/session/$sessionId/approach': typeof SessionSessionIdApproachRoute
+  '/session/$sessionId/b-request': typeof SessionSessionIdBRequestRoute
+  '/session/$sessionId/b-statement': typeof SessionSessionIdBStatementRoute
   '/session/$sessionId/i-statement': typeof SessionSessionIdIStatementRoute
+  '/session/$sessionId/intent': typeof SessionSessionIdIntentRoute
   '/session/$sessionId/problem': typeof SessionSessionIdProblemRoute
   '/session/$sessionId/readiness': typeof SessionSessionIdReadinessRoute
+  '/session/$sessionId/reflect': typeof SessionSessionIdReflectRoute
   '/session/$sessionId/request': typeof SessionSessionIdRequestRoute
   '/session/$sessionId/summary': typeof SessionSessionIdSummaryRoute
   '/session/$sessionId/transition': typeof SessionSessionIdTransitionRoute
@@ -99,10 +137,15 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/history': typeof HistoryRoute
   '/session/new': typeof SessionNewRoute
+  '/session/$sessionId/acknowledge': typeof SessionSessionIdAcknowledgeRoute
   '/session/$sessionId/approach': typeof SessionSessionIdApproachRoute
+  '/session/$sessionId/b-request': typeof SessionSessionIdBRequestRoute
+  '/session/$sessionId/b-statement': typeof SessionSessionIdBStatementRoute
   '/session/$sessionId/i-statement': typeof SessionSessionIdIStatementRoute
+  '/session/$sessionId/intent': typeof SessionSessionIdIntentRoute
   '/session/$sessionId/problem': typeof SessionSessionIdProblemRoute
   '/session/$sessionId/readiness': typeof SessionSessionIdReadinessRoute
+  '/session/$sessionId/reflect': typeof SessionSessionIdReflectRoute
   '/session/$sessionId/request': typeof SessionSessionIdRequestRoute
   '/session/$sessionId/summary': typeof SessionSessionIdSummaryRoute
   '/session/$sessionId/transition': typeof SessionSessionIdTransitionRoute
@@ -113,10 +156,15 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/history': typeof HistoryRoute
   '/session/new': typeof SessionNewRoute
+  '/session/$sessionId/acknowledge': typeof SessionSessionIdAcknowledgeRoute
   '/session/$sessionId/approach': typeof SessionSessionIdApproachRoute
+  '/session/$sessionId/b-request': typeof SessionSessionIdBRequestRoute
+  '/session/$sessionId/b-statement': typeof SessionSessionIdBStatementRoute
   '/session/$sessionId/i-statement': typeof SessionSessionIdIStatementRoute
+  '/session/$sessionId/intent': typeof SessionSessionIdIntentRoute
   '/session/$sessionId/problem': typeof SessionSessionIdProblemRoute
   '/session/$sessionId/readiness': typeof SessionSessionIdReadinessRoute
+  '/session/$sessionId/reflect': typeof SessionSessionIdReflectRoute
   '/session/$sessionId/request': typeof SessionSessionIdRequestRoute
   '/session/$sessionId/summary': typeof SessionSessionIdSummaryRoute
   '/session/$sessionId/transition': typeof SessionSessionIdTransitionRoute
@@ -128,10 +176,15 @@ export interface FileRouteTypes {
     | '/about'
     | '/history'
     | '/session/new'
+    | '/session/$sessionId/acknowledge'
     | '/session/$sessionId/approach'
+    | '/session/$sessionId/b-request'
+    | '/session/$sessionId/b-statement'
     | '/session/$sessionId/i-statement'
+    | '/session/$sessionId/intent'
     | '/session/$sessionId/problem'
     | '/session/$sessionId/readiness'
+    | '/session/$sessionId/reflect'
     | '/session/$sessionId/request'
     | '/session/$sessionId/summary'
     | '/session/$sessionId/transition'
@@ -141,10 +194,15 @@ export interface FileRouteTypes {
     | '/about'
     | '/history'
     | '/session/new'
+    | '/session/$sessionId/acknowledge'
     | '/session/$sessionId/approach'
+    | '/session/$sessionId/b-request'
+    | '/session/$sessionId/b-statement'
     | '/session/$sessionId/i-statement'
+    | '/session/$sessionId/intent'
     | '/session/$sessionId/problem'
     | '/session/$sessionId/readiness'
+    | '/session/$sessionId/reflect'
     | '/session/$sessionId/request'
     | '/session/$sessionId/summary'
     | '/session/$sessionId/transition'
@@ -154,10 +212,15 @@ export interface FileRouteTypes {
     | '/about'
     | '/history'
     | '/session/new'
+    | '/session/$sessionId/acknowledge'
     | '/session/$sessionId/approach'
+    | '/session/$sessionId/b-request'
+    | '/session/$sessionId/b-statement'
     | '/session/$sessionId/i-statement'
+    | '/session/$sessionId/intent'
     | '/session/$sessionId/problem'
     | '/session/$sessionId/readiness'
+    | '/session/$sessionId/reflect'
     | '/session/$sessionId/request'
     | '/session/$sessionId/summary'
     | '/session/$sessionId/transition'
@@ -168,10 +231,15 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   HistoryRoute: typeof HistoryRoute
   SessionNewRoute: typeof SessionNewRoute
+  SessionSessionIdAcknowledgeRoute: typeof SessionSessionIdAcknowledgeRoute
   SessionSessionIdApproachRoute: typeof SessionSessionIdApproachRoute
+  SessionSessionIdBRequestRoute: typeof SessionSessionIdBRequestRoute
+  SessionSessionIdBStatementRoute: typeof SessionSessionIdBStatementRoute
   SessionSessionIdIStatementRoute: typeof SessionSessionIdIStatementRoute
+  SessionSessionIdIntentRoute: typeof SessionSessionIdIntentRoute
   SessionSessionIdProblemRoute: typeof SessionSessionIdProblemRoute
   SessionSessionIdReadinessRoute: typeof SessionSessionIdReadinessRoute
+  SessionSessionIdReflectRoute: typeof SessionSessionIdReflectRoute
   SessionSessionIdRequestRoute: typeof SessionSessionIdRequestRoute
   SessionSessionIdSummaryRoute: typeof SessionSessionIdSummaryRoute
   SessionSessionIdTransitionRoute: typeof SessionSessionIdTransitionRoute
@@ -228,6 +296,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SessionSessionIdRequestRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/session/$sessionId/reflect': {
+      id: '/session/$sessionId/reflect'
+      path: '/session/$sessionId/reflect'
+      fullPath: '/session/$sessionId/reflect'
+      preLoaderRoute: typeof SessionSessionIdReflectRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/session/$sessionId/readiness': {
       id: '/session/$sessionId/readiness'
       path: '/session/$sessionId/readiness'
@@ -242,6 +317,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SessionSessionIdProblemRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/session/$sessionId/intent': {
+      id: '/session/$sessionId/intent'
+      path: '/session/$sessionId/intent'
+      fullPath: '/session/$sessionId/intent'
+      preLoaderRoute: typeof SessionSessionIdIntentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/session/$sessionId/i-statement': {
       id: '/session/$sessionId/i-statement'
       path: '/session/$sessionId/i-statement'
@@ -249,11 +331,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SessionSessionIdIStatementRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/session/$sessionId/b-statement': {
+      id: '/session/$sessionId/b-statement'
+      path: '/session/$sessionId/b-statement'
+      fullPath: '/session/$sessionId/b-statement'
+      preLoaderRoute: typeof SessionSessionIdBStatementRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/session/$sessionId/b-request': {
+      id: '/session/$sessionId/b-request'
+      path: '/session/$sessionId/b-request'
+      fullPath: '/session/$sessionId/b-request'
+      preLoaderRoute: typeof SessionSessionIdBRequestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/session/$sessionId/approach': {
       id: '/session/$sessionId/approach'
       path: '/session/$sessionId/approach'
       fullPath: '/session/$sessionId/approach'
       preLoaderRoute: typeof SessionSessionIdApproachRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/session/$sessionId/acknowledge': {
+      id: '/session/$sessionId/acknowledge'
+      path: '/session/$sessionId/acknowledge'
+      fullPath: '/session/$sessionId/acknowledge'
+      preLoaderRoute: typeof SessionSessionIdAcknowledgeRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -264,10 +367,15 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   HistoryRoute: HistoryRoute,
   SessionNewRoute: SessionNewRoute,
+  SessionSessionIdAcknowledgeRoute: SessionSessionIdAcknowledgeRoute,
   SessionSessionIdApproachRoute: SessionSessionIdApproachRoute,
+  SessionSessionIdBRequestRoute: SessionSessionIdBRequestRoute,
+  SessionSessionIdBStatementRoute: SessionSessionIdBStatementRoute,
   SessionSessionIdIStatementRoute: SessionSessionIdIStatementRoute,
+  SessionSessionIdIntentRoute: SessionSessionIdIntentRoute,
   SessionSessionIdProblemRoute: SessionSessionIdProblemRoute,
   SessionSessionIdReadinessRoute: SessionSessionIdReadinessRoute,
+  SessionSessionIdReflectRoute: SessionSessionIdReflectRoute,
   SessionSessionIdRequestRoute: SessionSessionIdRequestRoute,
   SessionSessionIdSummaryRoute: SessionSessionIdSummaryRoute,
   SessionSessionIdTransitionRoute: SessionSessionIdTransitionRoute,
