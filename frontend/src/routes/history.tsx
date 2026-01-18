@@ -1,18 +1,15 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { History, Trash2, MessageCircle, Clock } from "lucide-react";
 import { getSessions, deleteSession, type LocalSession } from "@/lib/storage";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 export const Route = createFileRoute("/history")({
   component: HistoryPage,
 });
 
 function HistoryPage() {
-  const [sessions, setSessions] = useState<LocalSession[]>([]);
-
-  useEffect(() => {
-    setSessions(getSessions());
-  }, []);
+  // Use lazy initialization to avoid useEffect setState issues
+  const [sessions, setSessions] = useState<LocalSession[]>(() => getSessions());
 
   const handleDelete = (id: string) => {
     if (confirm("Delete this conversation?")) {

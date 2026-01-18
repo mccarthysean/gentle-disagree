@@ -102,7 +102,7 @@ function IStatementPage() {
       setSituation(result.situation);
       setShowAIHelper(false);
       setRawStatement("");
-    } catch (error) {
+    } catch {
       setAIError(
         "Couldn't connect to AI assistant. You can still build your statement manually below."
       );

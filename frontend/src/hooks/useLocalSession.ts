@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useCallback } from "react";
 import {
   getSession,
   updateSession,
@@ -13,15 +13,12 @@ import {
  * Automatically syncs with localStorage.
  */
 export function useLocalSession(sessionId: string) {
-  const [session, setSession] = useState<LocalSession | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  // Load session on mount
-  useEffect(() => {
-    const loaded = getSession(sessionId);
-    setSession(loaded);
-    setLoading(false);
-  }, [sessionId]);
+  // Use lazy initialization to avoid useEffect setState issues
+  const [session, setSession] = useState<LocalSession | null>(() =>
+    getSession(sessionId)
+  );
+  // Loading is always false since we use synchronous localStorage
+  const loading = false;
 
   // Refresh session from storage
   const refresh = useCallback(() => {
