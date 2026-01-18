@@ -47,3 +47,5 @@ htmlcov/
 # PWA
 dev-dist/
 .claude/settings.local.json
+frontend/tsconfig.app.tsbuildinfo
+
