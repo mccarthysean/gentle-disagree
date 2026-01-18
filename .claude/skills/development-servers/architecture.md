@@ -4,7 +4,7 @@
 
 ```
 ┌─────────────────────────────────────────┐
-│  Vite (Port 5173 / 3000)                │
+│  Vite (Port 5200 / 3000)                │
 │  React 19 + TypeScript Frontend         │
 │  TanStack Router + Tailwind CSS v4      │
 │  Hot Module Replacement                 │
@@ -108,6 +108,6 @@ VITE_API_URL=http://localhost:8000
 
 | Environment | Frontend | API | Ollama |
 |-------------|----------|-----|--------|
-| Dev (manual) | :5173 | :8000 | :11434 |
+| Dev (manual) | :5200 | :8002 | :11434 |
 | Docker | :3000 | :8000 | :11434 |
 | Production | gentledisagree.space | /api | Internal |

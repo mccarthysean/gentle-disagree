@@ -12,8 +12,8 @@ Manage Vite (frontend), FastAPI (backend), and Ollama (AI) development servers f
 
 | Service | Port | Description |
 |---------|------|-------------|
-| Vite | 5173 | React frontend with HMR |
-| FastAPI | 8000 | REST API backend (stateless) |
+| Vite | 5200 | React frontend with HMR |
+| FastAPI | 8000-8002 | REST API backend (stateless) |
 | Ollama | 11434 | Local AI (Llama 3.2) |
 
 ## Quick Start
@@ -31,16 +31,35 @@ docker compose up -d
 # Terminal 1: Frontend
 cd /home/sean/git_wsl/gentle-disagree/frontend
 bun install  # First time only
-bun run dev
+bun run dev  # Starts on port 5200
 
-# Terminal 2: Backend
+# Terminal 2: Backend (Option A - fastapi dev)
 cd /home/sean/git_wsl/gentle-disagree/backend
 uv sync  # First time only
-uv run fastapi dev app/main.py
+uv run fastapi dev app/main.py --port 8000
+
+# Terminal 2: Backend (Option B - uvicorn, use if port conflicts)
+cd /home/sean/git_wsl/gentle-disagree/backend
+uv run uvicorn app.main:app --port 8002 --host 0.0.0.0 --reload
 
 # Terminal 3: Ollama (if not using Docker)
 ollama serve
 ollama pull llama3.2:3b
+```
+
+### Port Conflict Resolution
+
+If you see "Address already in use" errors:
+
+```bash
+# Find and kill process on a specific port
+lsof -ti :8000 | xargs -r kill -9
+
+# Or use uvicorn with an alternative port
+uv run uvicorn app.main:app --port 8002 --host 0.0.0.0 --reload
+
+# Update frontend/.env to match:
+# VITE_API_URL=http://localhost:8002
 ```
 
 ## Core Commands
@@ -53,7 +72,7 @@ cd /home/sean/git_wsl/gentle-disagree/frontend
 # Install dependencies
 bun install
 
-# Start dev server (port 5173)
+# Start dev server (port 5200)
 bun run dev
 
 # Build for production
@@ -74,8 +93,11 @@ cd /home/sean/git_wsl/gentle-disagree/backend
 # Install dependencies
 uv sync
 
-# Start dev server (port 8000)
+# Start dev server with fastapi CLI (port 8000)
 uv run fastapi dev app/main.py
+
+# OR start with uvicorn directly (more control)
+uv run uvicorn app.main:app --port 8002 --host 0.0.0.0 --reload
 
 # Lint code
 uv run ruff check .
@@ -102,12 +124,27 @@ docker compose down
 docker compose up -d --build
 ```
 
+## Environment Variables
+
+### Frontend (frontend/.env)
+```env
+# API URL - update port if backend uses different port
+VITE_API_URL=http://localhost:8002
+```
+
+### Backend (implicit defaults in main.py)
+```env
+OLLAMA_URL=http://localhost:11434
+OLLAMA_MODEL=llama3.2:3b
+CORS_ORIGINS=*
+```
+
 ## URLs
 
 ### Development (Manual Start)
-- Frontend: `http://localhost:5173`
-- API Docs: `http://localhost:8000/docs`
-- API Health: `http://localhost:8000/health`
+- Frontend: `http://localhost:5200`
+- API Docs: `http://localhost:8002/docs`
+- API Health: `http://localhost:8002/health`
 - Ollama: `http://localhost:11434`
 
 ### Docker Compose
@@ -118,21 +155,26 @@ docker compose up -d --build
 ## Quick Verification
 
 ```bash
-# Check FastAPI
-curl -f http://localhost:8000/health && echo "FastAPI OK"
+# Check FastAPI (adjust port as needed)
+curl -f http://localhost:8002/health && echo "FastAPI OK"
 
 # Check Vite (dev mode)
-curl -f http://localhost:5173 && echo "Vite OK"
+curl -f http://localhost:5200 && echo "Vite OK"
 
 # Check Ollama
 curl -f http://localhost:11434/api/tags && echo "Ollama OK"
+
+# Test AI endpoint
+curl -X POST http://localhost:8002/ai/reframe \
+  -H "Content-Type: application/json" \
+  -d '{"statement": "You never listen to me"}' | jq .
 ```
 
 ## Auto-Reload
 
 Both services have auto-reload enabled:
 - **Vite**: Built-in hot module replacement
-- **FastAPI**: `fastapi dev` monitors code changes
+- **FastAPI/uvicorn**: `--reload` flag monitors code changes
 
 Manual restart only needed for:
 - Environment variable changes
