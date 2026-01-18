@@ -72,7 +72,7 @@ docker compose up    # Start all services
 ## File Structure
 
 ```
-conflict-compass/
+gentle-disagree/
 ├── frontend/
 │   ├── src/
 │   │   ├── components/    # UI components
@@ -90,4 +90,4 @@ conflict-compass/
 - Use `bun` for frontend package management (not npm)
 - Use `uv` for Python package management
 - All routes use TanStack Router file-based routing
-- localStorage key: `conflict-compass-sessions`
+- localStorage key: `gentle-disagree-sessions`

@@ -1,7 +1,7 @@
 [project]
 name = "gentle-disagree-api"
 version = "1.0.0"
-description = "Minimal AI backend for Conflict Compass"
+description = "Minimal AI backend for Gentle Disagree"
 requires-python = ">=3.11"
 dependencies = [
     "fastapi>=0.115.0",

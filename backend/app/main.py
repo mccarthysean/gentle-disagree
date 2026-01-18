@@ -65,7 +65,7 @@ async def health():
     """Health check endpoint."""
     return {
         "status": "healthy",
-        "service": "conflict-compass-api",
+        "service": "gentle-disagree-api",
         "ollama_url": OLLAMA_URL,
         "model": OLLAMA_MODEL,
     }

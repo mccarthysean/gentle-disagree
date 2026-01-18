@@ -1,1 +1,1 @@
-# Conflict Compass API
+# Gentle Disagree API

@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-/* Custom theme for Conflict Compass - Calming, therapeutic design */
+/* Custom theme for Gentle Disagree - Calming, therapeutic design */
 @theme {
   /* Calming Greens */
   --color-sage: #5b8c6a;
@@ -113,24 +113,25 @@
     border: 1px solid var(--color-border);
   }
 
-  /* Buttons */
-  .btn {
+  /* Buttons - base styles repeated to avoid @apply circular reference in Tailwind v4 */
+  .btn-primary {
     @apply px-6 py-3 rounded-[12px] font-semibold transition-all duration-200;
     @apply focus:outline-none focus:ring-2 focus:ring-sage/30 focus:ring-offset-2;
-  }
-
-  .btn-primary {
-    @apply btn bg-sage text-white;
+    @apply bg-sage text-white;
     @apply hover:bg-sage-dark active:scale-[0.98];
   }
 
   .btn-secondary {
-    @apply btn bg-sand text-sage border border-sage/20;
+    @apply px-6 py-3 rounded-[12px] font-semibold transition-all duration-200;
+    @apply focus:outline-none focus:ring-2 focus:ring-sage/30 focus:ring-offset-2;
+    @apply bg-sand text-sage border border-sage/20;
     @apply hover:bg-stone active:scale-[0.98];
   }
 
   .btn-ghost {
-    @apply btn bg-transparent text-sage;
+    @apply px-6 py-3 rounded-[12px] font-semibold transition-all duration-200;
+    @apply focus:outline-none focus:ring-2 focus:ring-sage/30 focus:ring-offset-2;
+    @apply bg-transparent text-sage;
     @apply hover:bg-sage/5 active:scale-[0.98];
   }
 
@@ -144,7 +145,12 @@
   }
 
   .textarea {
-    @apply input min-h-[120px] resize-none;
+    @apply w-full px-4 py-3 rounded-[12px];
+    @apply bg-sand border border-stone;
+    @apply focus:border-sage focus:ring-2 focus:ring-sage/20 focus:outline-none;
+    @apply placeholder:text-text-muted;
+    @apply transition-all duration-200;
+    @apply min-h-[120px] resize-none;
   }
 
   /* Affirmation banners */
@@ -196,7 +202,9 @@
 
   /* Step card (for wizard steps) */
   .step-card {
-    @apply card max-w-md mx-auto;
+    @apply bg-white rounded-[16px] p-6 max-w-md mx-auto;
+    box-shadow: var(--shadow-card);
+    border: 1px solid rgba(91, 140, 106, 0.1);
   }
 
   /* Emotion picker grid */

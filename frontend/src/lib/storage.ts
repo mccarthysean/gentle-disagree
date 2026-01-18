@@ -1,5 +1,5 @@
 /**
- * LocalStorage utilities for Conflict Compass sessions.
+ * LocalStorage utilities for Gentle Disagree sessions.
  * All conversation data stays on the device - nothing is sent to servers.
  */
 
