@@ -121,10 +121,10 @@ Respond with ONLY valid JSON in this exact format (no extra text):
                 ),
             )
     except httpx.TimeoutException:
-        raise HTTPException(status_code=504, detail="AI service timeout")
+        raise HTTPException(status_code=504, detail="AI service timeout") from None
     except httpx.HTTPError as e:
-        raise HTTPException(status_code=502, detail=f"AI service error: {str(e)}")
-    except Exception as e:
+        raise HTTPException(status_code=502, detail=f"AI service error: {str(e)}") from e
+    except Exception:
         # Fallback response if AI fails
         return ReframeResponse(
             emotion="concerned",
