@@ -1,0 +1,262 @@
+@import "tailwindcss";
+
+/* Custom theme for Conflict Compass - Calming, therapeutic design */
+@theme {
+  /* Calming Greens */
+  --color-sage: #5b8c6a;
+  --color-sage-light: #7ba98a;
+  --color-sage-dark: #4a7356;
+  --color-mint: #e8f5eb;
+
+  /* Warm Neutrals */
+  --color-cream: #fdf9f3;
+  --color-sand: #f5f0e8;
+  --color-stone: #e8e4dd;
+  --color-clay: #d4cfc5;
+
+  /* Soft Blues */
+  --color-sky: #87ceeb;
+  --color-sky-light: #b0e0f0;
+  --color-sky-dark: #5cacde;
+
+  /* Text Colors */
+  --color-text-primary: #2c3e2d;
+  --color-text-secondary: #5a6b5c;
+  --color-text-muted: #8a9a8c;
+
+  /* Accent Colors */
+  --color-accent-warm: #e8b87d;
+  --color-accent-coral: #e8a598;
+
+  /* Semantic Colors */
+  --color-background: #fdf9f3;
+  --color-card: #ffffff;
+  --color-border: rgba(91, 140, 106, 0.2);
+  --color-success: #5b8c6a;
+  --color-warning: #e8b87d;
+  --color-error: #e8a598;
+
+  /* Spacing */
+  --radius-soft: 12px;
+  --radius-card: 16px;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-soft: 0 2px 8px rgba(91, 140, 106, 0.08);
+  --shadow-card: 0 4px 16px rgba(91, 140, 106, 0.1);
+}
+
+/* Typography - Using Google Fonts */
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap");
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-cream text-text-primary antialiased;
+    font-family: "Nunito", sans-serif;
+    min-height: 100vh;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: "Playfair Display", serif;
+    @apply text-text-primary;
+  }
+
+  h1 {
+    @apply text-3xl font-semibold tracking-tight;
+  }
+
+  h2 {
+    @apply text-2xl font-medium;
+  }
+
+  h3 {
+    @apply text-xl font-medium;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-sand;
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-sage/30;
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-sage/50;
+  }
+}
+
+@layer components {
+  /* Cards */
+  .card {
+    @apply bg-white rounded-[16px] p-6;
+    box-shadow: var(--shadow-card);
+    border: 1px solid rgba(91, 140, 106, 0.1);
+  }
+
+  .card-soft {
+    @apply bg-sand rounded-[16px] p-6;
+    border: 1px solid var(--color-border);
+  }
+
+  /* Buttons */
+  .btn {
+    @apply px-6 py-3 rounded-[12px] font-semibold transition-all duration-200;
+    @apply focus:outline-none focus:ring-2 focus:ring-sage/30 focus:ring-offset-2;
+  }
+
+  .btn-primary {
+    @apply btn bg-sage text-white;
+    @apply hover:bg-sage-dark active:scale-[0.98];
+  }
+
+  .btn-secondary {
+    @apply btn bg-sand text-sage border border-sage/20;
+    @apply hover:bg-stone active:scale-[0.98];
+  }
+
+  .btn-ghost {
+    @apply btn bg-transparent text-sage;
+    @apply hover:bg-sage/5 active:scale-[0.98];
+  }
+
+  /* Inputs */
+  .input {
+    @apply w-full px-4 py-3 rounded-[12px];
+    @apply bg-sand border border-stone;
+    @apply focus:border-sage focus:ring-2 focus:ring-sage/20 focus:outline-none;
+    @apply placeholder:text-text-muted;
+    @apply transition-all duration-200;
+  }
+
+  .textarea {
+    @apply input min-h-[120px] resize-none;
+  }
+
+  /* Affirmation banners */
+  .affirmation {
+    @apply bg-mint/60 border border-sage/20 rounded-[12px] p-4;
+    @apply text-sage-dark text-center;
+    @apply flex items-center justify-center gap-2;
+  }
+
+  /* Phrase chips (tappable suggestions) */
+  .phrase-chip {
+    @apply inline-flex items-center px-3 py-2 rounded-full;
+    @apply bg-sand border border-stone text-text-secondary;
+    @apply hover:bg-sage/10 hover:border-sage/30 hover:text-sage;
+    @apply cursor-pointer transition-all duration-200;
+    @apply text-sm;
+  }
+
+  .phrase-chip-active {
+    @apply bg-sage/10 border-sage/30 text-sage;
+  }
+
+  /* Progress indicator */
+  .progress-step {
+    @apply w-3 h-3 rounded-full bg-stone transition-all duration-300;
+  }
+
+  .progress-step-active {
+    @apply bg-sage scale-125;
+  }
+
+  .progress-step-completed {
+    @apply bg-sage-light;
+  }
+
+  /* Partner badge */
+  .partner-badge {
+    @apply inline-flex items-center justify-center;
+    @apply w-8 h-8 rounded-full font-semibold text-sm;
+  }
+
+  .partner-badge-a {
+    @apply bg-sky-light text-sky-dark;
+  }
+
+  .partner-badge-b {
+    @apply bg-accent-warm/30 text-accent-warm;
+  }
+
+  /* Step card (for wizard steps) */
+  .step-card {
+    @apply card max-w-md mx-auto;
+  }
+
+  /* Emotion picker grid */
+  .emotion-grid {
+    @apply grid grid-cols-3 gap-2;
+  }
+
+  .emotion-btn {
+    @apply py-2 px-3 rounded-[8px] text-sm;
+    @apply bg-sand border border-stone text-text-secondary;
+    @apply hover:bg-sage/10 hover:border-sage/30 hover:text-sage;
+    @apply transition-all duration-200 cursor-pointer;
+  }
+
+  .emotion-btn-selected {
+    @apply bg-sage text-white border-sage;
+  }
+}
+
+@layer utilities {
+  /* Breathing animation for calming effect */
+  @keyframes breathe {
+    0%,
+    100% {
+      transform: scale(1);
+      opacity: 0.8;
+    }
+    50% {
+      transform: scale(1.02);
+      opacity: 1;
+    }
+  }
+
+  .animate-breathe {
+    animation: breathe 4s ease-in-out infinite;
+  }
+
+  /* Fade in animation */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.3s ease-out forwards;
+  }
+
+  /* Hide scrollbar utility */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}

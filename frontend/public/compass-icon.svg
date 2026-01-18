@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <!-- Background circle -->
+  <circle cx="50" cy="50" r="45" fill="#5B8C6A"/>
+
+  <!-- Inner circle -->
+  <circle cx="50" cy="50" r="35" fill="#E8F5EB"/>
+
+  <!-- Heart shape representing love/connection -->
+  <path d="M50 70 L35 55 C28 48 28 38 35 32 C42 26 50 32 50 40 C50 32 58 26 65 32 C72 38 72 48 65 55 Z" fill="#5B8C6A"/>
+
+  <!-- Two small dots representing the couple -->
+  <circle cx="42" cy="45" r="4" fill="#FDF9F3"/>
+  <circle cx="58" cy="45" r="4" fill="#FDF9F3"/>
+</svg>
