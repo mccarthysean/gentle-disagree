@@ -38,10 +38,10 @@ function BStatementPage() {
   } = useLocalSession(sessionId);
 
   const [selectedEmotion, setSelectedEmotion] = useState(
-    session?.partnerBData?.iStatement?.emotion || ""
+    session?.partnerBData?.iStatement?.emotion || "",
   );
   const [situation, setSituation] = useState(
-    session?.partnerBData?.iStatement?.situation || ""
+    session?.partnerBData?.iStatement?.situation || "",
   );
 
   if (loading) {
@@ -102,16 +102,16 @@ function BStatementPage() {
       <section className="text-center space-y-2">
         <h1 className="text-2xl">Your Turn to Share</h1>
         <p className="text-text-secondary">
-          Now it's your turn, {currentPartnerName}. Share how you feel about this
-          situation.
+          Now it's your turn, {currentPartnerName}. Share how you feel about
+          this situation.
         </p>
       </section>
 
       {/* Context reminder */}
       <div className="card-soft text-sm">
         <p className="text-text-muted">
-          You've reflected on {otherPartnerName}'s feelings and responded to their
-          request. Now share your own perspective.
+          You've reflected on {otherPartnerName}'s feelings and responded to
+          their request. Now share your own perspective.
         </p>
       </div>
 

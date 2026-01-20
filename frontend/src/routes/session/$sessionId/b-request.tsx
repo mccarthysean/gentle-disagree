@@ -157,7 +157,9 @@ function BRequestPage() {
       {/* Affirmation */}
       <div className="affirmation">
         <HandHeart className="w-4 h-4" />
-        <span>You've both shown up for this conversation. That takes courage.</span>
+        <span>
+          You've both shown up for this conversation. That takes courage.
+        </span>
       </div>
 
       {/* Complete */}

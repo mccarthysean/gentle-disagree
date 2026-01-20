@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { CheckCircle2, Circle, Clock, ArrowRight, Pause } from "lucide-react";
 import { useLocalSession } from "@/hooks/useLocalSession";
-import { TurnIndicator, AIHelper } from "@/components/wizard";
+import { TurnIndicator } from "@/components/wizard";
 
 export const Route = createFileRoute("/session/$sessionId/readiness")({
   component: ReadinessPage,
@@ -24,7 +24,6 @@ function ReadinessPage() {
 
   const [isCalm, setIsCalm] = useState(false);
   const [isRelaxed, setIsRelaxed] = useState(false);
-  const [rescheduleMessage, setRescheduleMessage] = useState("");
 
   if (loading) {
     return (
@@ -143,20 +142,6 @@ function ReadinessPage() {
           Not Right Now – Let's Reschedule
         </button>
       </section>
-
-      {/* AI Helper for rescheduling */}
-      <AIHelper
-        type="reschedule"
-        onResult={(result) => setRescheduleMessage(result)}
-        partnerName={otherPartnerName}
-      />
-
-      {rescheduleMessage && (
-        <div className="card-soft">
-          <p className="text-sm text-text-muted mb-2">Suggested phrase:</p>
-          <p className="text-text-primary italic">"{rescheduleMessage}"</p>
-        </div>
-      )}
 
       {/* Pause phrase */}
       <div className="text-center">

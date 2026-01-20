@@ -30,7 +30,7 @@ function ReflectPage() {
   } = useLocalSession(sessionId);
 
   const [reflection, setReflection] = useState(
-    session?.partnerBResponses?.reflection || ""
+    session?.partnerBResponses?.reflection || "",
   );
 
   if (loading) {
@@ -162,7 +162,7 @@ function ReflectPage() {
           id="reflection"
           value={reflection}
           onChange={(e) => setReflection(e.target.value)}
-          placeholder={`e.g., "What I hear you saying is that you feel ${iStatement.emotion || 'hurt'} when I ${iStatement.situation || '...'}. I can understand why that would be difficult."`}
+          placeholder={`e.g., "What I hear you saying is that you feel ${iStatement.emotion || "hurt"} when I ${iStatement.situation || "..."}. I can understand why that would be difficult."`}
           className="textarea"
           rows={4}
         />

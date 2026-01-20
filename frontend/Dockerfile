@@ -22,7 +22,7 @@ WORKDIR /app
 
 # Install curl for healthcheck and serve for static file serving
 RUN apt-get update && apt-get install -y --no-install-recommends curl \
-    && rm -rf /var/lib/apt/lists/*
+  && rm -rf /var/lib/apt/lists/*
 
 # Install serve for static file serving with SPA support
 RUN bun add serve

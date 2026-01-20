@@ -152,7 +152,9 @@ function RequestPage() {
         </p>
         <div className="flex flex-wrap gap-2">
           <span className="phrase-chip text-xs">"Let me try again"</span>
-          <span className="phrase-chip text-xs">"I can see my part in this"</span>
+          <span className="phrase-chip text-xs">
+            "I can see my part in this"
+          </span>
           <span className="phrase-chip text-xs">
             "How can I make things better?"
           </span>

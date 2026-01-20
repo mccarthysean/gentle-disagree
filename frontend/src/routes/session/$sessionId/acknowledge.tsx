@@ -45,11 +45,12 @@ function AcknowledgePage() {
     getStepInfo,
   } = useLocalSession(sessionId);
 
-  const [acknowledgmentType, setAcknowledgmentType] = useState<AcknowledgmentType>(
-    session?.partnerBResponses?.acknowledgmentType || ""
-  );
+  const [acknowledgmentType, setAcknowledgmentType] =
+    useState<AcknowledgmentType>(
+      session?.partnerBResponses?.acknowledgmentType || "",
+    );
   const [acknowledgment, setAcknowledgment] = useState(
-    session?.partnerBResponses?.acknowledgment || ""
+    session?.partnerBResponses?.acknowledgment || "",
   );
 
   if (loading) {
@@ -74,7 +75,8 @@ function AcknowledgePage() {
   const { partnerAData } = session;
   const request = partnerAData.request;
 
-  const canContinue = acknowledgmentType !== "" && acknowledgment.trim().length > 0;
+  const canContinue =
+    acknowledgmentType !== "" && acknowledgment.trim().length > 0;
 
   const handleContinue = () => {
     updateBResponses({
@@ -204,7 +206,9 @@ function AcknowledgePage() {
           <button
             className="phrase-chip text-xs"
             onClick={() =>
-              setAcknowledgment((prev) => prev + " How can I make things better?")
+              setAcknowledgment(
+                (prev) => prev + " How can I make things better?",
+              )
             }
           >
             "How can I make things better?"

@@ -30,7 +30,7 @@ function IntentPage() {
   } = useLocalSession(sessionId);
 
   const [acknowledgment, setAcknowledgment] = useState(
-    session?.partnerAData?.intentAcknowledgment || ""
+    session?.partnerAData?.intentAcknowledgment || "",
   );
   const [confirmed, setConfirmed] = useState(false);
 
