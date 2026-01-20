@@ -1,14 +1,7 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import {
-  MessageCircle,
-  ArrowRight,
-  Sparkles,
-  Lightbulb,
-  Loader2,
-} from "lucide-react";
+import { MessageCircle, ArrowRight, Lightbulb } from "lucide-react";
 import { useLocalSession } from "@/hooks/useLocalSession";
-import { reframeStatement } from "@/lib/ai";
 import { TurnIndicator } from "@/components/wizard";
 
 export const Route = createFileRoute("/session/$sessionId/i-statement")({
@@ -46,12 +39,6 @@ function IStatementPage() {
 
   const [selectedEmotion, setSelectedEmotion] = useState("");
   const [situation, setSituation] = useState("");
-
-  // AI assistance state
-  const [rawStatement, setRawStatement] = useState("");
-  const [isAILoading, setIsAILoading] = useState(false);
-  const [aiError, setAIError] = useState<string | null>(null);
-  const [showAIHelper, setShowAIHelper] = useState(false);
 
   if (loading) {
     return (
@@ -94,29 +81,6 @@ function IStatementPage() {
 
   const stepInfo = getStepInfo();
 
-  const handleAIReframe = async () => {
-    if (!rawStatement.trim()) return;
-
-    setIsAILoading(true);
-    setAIError(null);
-
-    try {
-      const result = await reframeStatement(rawStatement);
-
-      // Apply the AI suggestions
-      setSelectedEmotion(result.emotion);
-      setSituation(result.situation);
-      setShowAIHelper(false);
-      setRawStatement("");
-    } catch {
-      setAIError(
-        "Couldn't connect to AI assistant. You can still build your statement manually below."
-      );
-    } finally {
-      setIsAILoading(false);
-    }
-  };
-
   return (
     <div className="max-w-md mx-auto space-y-6 animate-fade-in">
       {/* Turn Indicator */}
@@ -149,71 +113,6 @@ function IStatementPage() {
           <span>"I feel lonely when we don't have time to talk."</span>
         </div>
       </div>
-
-      {/* AI Helper Toggle */}
-      {!showAIHelper ? (
-        <button
-          onClick={() => setShowAIHelper(true)}
-          className="w-full btn-secondary flex items-center justify-center gap-2"
-        >
-          <Sparkles className="w-4 h-4" />
-          Help me phrase this
-        </button>
-      ) : (
-        <section className="card border-sage/30 space-y-4">
-          <div className="flex items-center gap-2 text-sage">
-            <Sparkles className="w-5 h-5" />
-            <span className="font-medium">AI Assistant</span>
-          </div>
-          <p className="text-sm text-text-secondary">
-            Type what you're feeling in your own words, and I'll help turn it
-            into a constructive I-statement.
-          </p>
-          <textarea
-            value={rawStatement}
-            onChange={(e) => setRawStatement(e.target.value)}
-            placeholder="e.g., You never listen to me, you're always on your phone..."
-            className="textarea"
-            rows={3}
-          />
-          {aiError && (
-            <p className="text-sm text-error">{aiError}</p>
-          )}
-          <div className="flex gap-2">
-            <button
-              onClick={() => {
-                setShowAIHelper(false);
-                setRawStatement("");
-                setAIError(null);
-              }}
-              className="btn-ghost flex-1"
-            >
-              Cancel
-            </button>
-            <button
-              onClick={handleAIReframe}
-              disabled={!rawStatement.trim() || isAILoading}
-              className={`btn-primary flex-1 flex items-center justify-center gap-2 ${
-                !rawStatement.trim() || isAILoading
-                  ? "opacity-50 cursor-not-allowed"
-                  : ""
-              }`}
-            >
-              {isAILoading ? (
-                <>
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                  Thinking...
-                </>
-              ) : (
-                <>
-                  <Sparkles className="w-4 h-4" />
-                  Reframe
-                </>
-              )}
-            </button>
-          </div>
-        </section>
-      )}
 
       {/* Emotion picker */}
       <section className="card space-y-4">
@@ -268,9 +167,7 @@ function IStatementPage() {
           Other ways to express yourself:
         </p>
         <div className="flex flex-wrap gap-2 justify-center">
-          <button className="phrase-chip text-xs">
-            "I'm getting scared"
-          </button>
+          <button className="phrase-chip text-xs">"I'm getting scared"</button>
           <button className="phrase-chip text-xs">
             "That hurt my feelings"
           </button>

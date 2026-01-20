@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { Heart, ArrowRight, MessageCircle } from "lucide-react";
 import { useLocalSession } from "@/hooks/useLocalSession";
-import { TurnIndicator, AIHelper } from "@/components/wizard";
+import { TurnIndicator } from "@/components/wizard";
 
 export const Route = createFileRoute("/session/$sessionId/reflect")({
   component: ReflectPage,
@@ -149,14 +149,6 @@ function ReflectPage() {
           ))}
         </div>
       </section>
-
-      {/* AI Helper */}
-      <AIHelper
-        type="reflect"
-        onResult={(result) => setReflection(result)}
-        partnerName={otherPartnerName}
-        context={`Partner A said: "I feel ${iStatement.emotion} when ${iStatement.situation}"`}
-      />
 
       {/* Input */}
       <section className="card space-y-4">

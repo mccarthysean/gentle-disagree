@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { HandHeart, ArrowRight, Lightbulb, Users } from "lucide-react";
 import { useLocalSession } from "@/hooks/useLocalSession";
-import { TurnIndicator, AIHelper } from "@/components/wizard";
+import { TurnIndicator } from "@/components/wizard";
 
 export const Route = createFileRoute("/session/$sessionId/request")({
   component: RequestPage,
@@ -112,13 +112,6 @@ function RequestPage() {
           ))}
         </div>
       </section>
-
-      {/* AI Helper */}
-      <AIHelper
-        type="request"
-        onResult={(result) => setRequest(result)}
-        partnerName={otherPartnerName}
-      />
 
       {/* Input */}
       <section className="card space-y-4">

@@ -19,21 +19,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-
-      - name: Install uv
-        run: curl -LsSf https://astral.sh/uv/install.sh | sh
-
-      - name: Backend lint
-        working-directory: backend
-        run: |
-          uv sync --all-extras
-          uv run ruff check .
-          uv run ruff format --check .
-
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
 
@@ -66,16 +51,10 @@ jobs:
     strategy:
       matrix:
         include:
-          - name: api
-            dockerfile: backend/Dockerfile
-            context: backend
-            image: gentle-disagree-api
           - name: frontend
             dockerfile: frontend/Dockerfile
             context: frontend
             image: gentle-disagree-frontend
-            build-args: |
-              VITE_API_URL=https://api.gentledisagree.space
 
     steps:
       - name: Checkout
@@ -134,7 +113,6 @@ jobs:
           echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
           # Pull latest images
-          docker pull ghcr.io/${{ github.repository_owner }}/gentle-disagree-api:${{ github.sha }}
           docker pull ghcr.io/${{ github.repository_owner }}/gentle-disagree-frontend:${{ github.sha }}
 
           # Export variables for docker-compose

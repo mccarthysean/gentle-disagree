@@ -1,9 +1,8 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { MessageCircle, ArrowRight, Sparkles, Loader2 } from "lucide-react";
+import { MessageCircle, ArrowRight } from "lucide-react";
 import { useLocalSession } from "@/hooks/useLocalSession";
 import { TurnIndicator } from "@/components/wizard";
-import { reframeStatement } from "@/lib/ai";
 
 export const Route = createFileRoute("/session/$sessionId/b-statement")({
   component: BStatementPage,
@@ -45,12 +44,6 @@ function BStatementPage() {
     session?.partnerBData?.iStatement?.situation || ""
   );
 
-  // AI assistance state
-  const [rawStatement, setRawStatement] = useState("");
-  const [isAILoading, setIsAILoading] = useState(false);
-  const [aiError, setAIError] = useState<string | null>(null);
-  const [showAIHelper, setShowAIHelper] = useState(false);
-
   if (loading) {
     return (
       <div className="max-w-md mx-auto text-center py-12">
@@ -87,27 +80,6 @@ function BStatementPage() {
     const result = nextStep();
     if (result?.nextRoute) {
       navigate({ to: result.nextRoute });
-    }
-  };
-
-  const handleAIReframe = async () => {
-    if (!rawStatement.trim()) return;
-
-    setIsAILoading(true);
-    setAIError(null);
-
-    try {
-      const result = await reframeStatement(rawStatement);
-      setSelectedEmotion(result.emotion);
-      setSituation(result.situation);
-      setShowAIHelper(false);
-      setRawStatement("");
-    } catch {
-      setAIError(
-        "Couldn't connect to AI assistant. You can still build your statement manually below."
-      );
-    } finally {
-      setIsAILoading(false);
     }
   };
 
@@ -154,69 +126,6 @@ function BStatementPage() {
           <span>"I feel overwhelmed when there are many changes at once."</span>
         </div>
       </div>
-
-      {/* AI Helper Toggle */}
-      {!showAIHelper ? (
-        <button
-          onClick={() => setShowAIHelper(true)}
-          className="w-full btn-secondary flex items-center justify-center gap-2"
-        >
-          <Sparkles className="w-4 h-4" />
-          Help me phrase this
-        </button>
-      ) : (
-        <section className="card border-sage/30 space-y-4">
-          <div className="flex items-center gap-2 text-sage">
-            <Sparkles className="w-5 h-5" />
-            <span className="font-medium">AI Assistant</span>
-          </div>
-          <p className="text-sm text-text-secondary">
-            Type what you're feeling in your own words, and I'll help turn it
-            into a constructive I-statement.
-          </p>
-          <textarea
-            value={rawStatement}
-            onChange={(e) => setRawStatement(e.target.value)}
-            placeholder="e.g., I feel like my side isn't being heard..."
-            className="textarea"
-            rows={3}
-          />
-          {aiError && <p className="text-sm text-error">{aiError}</p>}
-          <div className="flex gap-2">
-            <button
-              onClick={() => {
-                setShowAIHelper(false);
-                setRawStatement("");
-                setAIError(null);
-              }}
-              className="btn-ghost flex-1"
-            >
-              Cancel
-            </button>
-            <button
-              onClick={handleAIReframe}
-              disabled={!rawStatement.trim() || isAILoading}
-              className={`btn-primary flex-1 flex items-center justify-center gap-2 ${
-                !rawStatement.trim() || isAILoading
-                  ? "opacity-50 cursor-not-allowed"
-                  : ""
-              }`}
-            >
-              {isAILoading ? (
-                <>
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                  Thinking...
-                </>
-              ) : (
-                <>
-                  <Sparkles className="w-4 h-4" />
-                  Reframe
-                </>
-              )}
-            </button>
-          </div>
-        </section>
-      )}
 
       {/* Emotion picker */}
       <section className="card space-y-4">

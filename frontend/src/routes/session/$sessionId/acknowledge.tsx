@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { HandHeart, ArrowRight, Check } from "lucide-react";
 import { useLocalSession } from "@/hooks/useLocalSession";
-import { TurnIndicator, AIHelper } from "@/components/wizard";
+import { TurnIndicator } from "@/components/wizard";
 
 export const Route = createFileRoute("/session/$sessionId/acknowledge")({
   component: AcknowledgePage,
@@ -152,14 +152,6 @@ function AcknowledgePage() {
           </button>
         ))}
       </section>
-
-      {/* AI Helper */}
-      <AIHelper
-        type="acknowledge"
-        onResult={(result) => setAcknowledgment(result)}
-        partnerName={otherPartnerName}
-        context={`Partner A requested: "${request}". Response type: ${acknowledgmentType || 'not selected yet'}`}
-      />
 
       {/* Response input */}
       <section className="card space-y-4">

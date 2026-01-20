@@ -7,8 +7,6 @@ Gentle Disagree (gentledisagree.space) is a privacy-focused couples therapy Prog
 ## Tech Stack
 
 - **Frontend**: React 19 + TypeScript + Vite 7 + TanStack Router + Tailwind CSS v4
-- **Backend**: FastAPI (stateless, AI only)
-- **AI**: Ollama with Llama 3.2 or Mistral
 - **Storage**: localStorage (device only - no server storage)
 - **PWA**: vite-plugin-pwa with Workbox
 
@@ -16,7 +14,7 @@ Gentle Disagree (gentledisagree.space) is a privacy-focused couples therapy Prog
 
 This app stores NO user data on servers:
 - All conversation data stays in localStorage
-- AI requests are ephemeral (processed and discarded)
+- No backend server needed
 - No accounts, no login required
 
 ## Key Concepts
@@ -46,14 +44,8 @@ bun run build        # Build for production
 bun run lint         # Run ESLint
 bun run typecheck    # TypeScript check
 
-# Backend
-cd backend && uv sync
-uv run fastapi dev app/main.py  # Start dev server
-uv run ruff check .  # Lint
-uv run ruff format . # Format
-
 # Docker
-docker compose up    # Start all services
+docker compose up    # Start frontend service
 ```
 
 ## Design System
@@ -77,17 +69,14 @@ gentle-disagree/
 │   ├── src/
 │   │   ├── components/    # UI components
 │   │   ├── hooks/         # Custom hooks (useLocalSession)
-│   │   ├── lib/           # Utilities (storage, ai)
+│   │   ├── lib/           # Utilities (storage)
 │   │   └── routes/        # TanStack Router pages
 │   └── vite.config.ts
-├── backend/
-│   └── app/main.py        # FastAPI AI endpoints
 └── docker-compose.yml
 ```
 
 ## Important Notes
 
 - Use `bun` for frontend package management (not npm)
-- Use `uv` for Python package management
 - All routes use TanStack Router file-based routing
 - localStorage key: `gentle-disagree-sessions`

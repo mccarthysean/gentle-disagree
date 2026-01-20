@@ -12,10 +12,6 @@ RUN bun install --frozen-lockfile
 # Copy source code
 COPY . .
 
-# Build argument for API URL
-ARG VITE_API_URL=https://api.gentledisagree.space
-ENV VITE_API_URL=$VITE_API_URL
-
 # Build the app
 RUN bun run build
 

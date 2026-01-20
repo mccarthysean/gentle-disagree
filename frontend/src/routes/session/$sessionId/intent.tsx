@@ -1,8 +1,8 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { Heart, ArrowRight, Sparkles } from "lucide-react";
+import { Heart, ArrowRight } from "lucide-react";
 import { useLocalSession } from "@/hooks/useLocalSession";
-import { TurnIndicator, AIHelper } from "@/components/wizard";
+import { TurnIndicator } from "@/components/wizard";
 
 export const Route = createFileRoute("/session/$sessionId/intent")({
   component: IntentPage,
@@ -97,7 +97,7 @@ function IntentPage() {
       {/* Why this matters */}
       <section className="card-soft border-l-4 border-sage">
         <div className="flex items-start gap-2">
-          <Sparkles className="w-5 h-5 text-sage flex-shrink-0 mt-0.5" />
+          <Heart className="w-5 h-5 text-sage flex-shrink-0 mt-0.5" />
           <div className="space-y-1">
             <p className="font-medium text-text-primary">Why this matters</p>
             <p className="text-sm text-text-secondary">
@@ -128,13 +128,6 @@ function IntentPage() {
           ))}
         </div>
       </section>
-
-      {/* AI Helper */}
-      <AIHelper
-        type="good_intentions"
-        onResult={(result) => setAcknowledgment(result)}
-        partnerName={otherPartnerName}
-      />
 
       {/* Input */}
       <section className="card space-y-4">

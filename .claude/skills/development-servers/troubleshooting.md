@@ -17,64 +17,11 @@ lsof -ti:8000 | xargs kill -9
 # Then restart servers
 ```
 
-## Problem: Frontend Can't Reach API
-
-**Symptoms:**
-- CORS errors in browser console
-- Network errors in React app
-- API calls failing
-
-**Diagnosis:**
-```bash
-# Check both servers are running
-curl -f http://localhost:8000/health
-curl -f http://localhost:5173
-```
-
-**Solutions:**
-1. Ensure both servers are running
-2. Check CORS settings in `backend/app/main.py`
-3. Verify `VITE_API_URL` in frontend environment
-
-## Problem: Ollama Not Responding
-
-**Symptoms:**
-- AI reframing not working
-- 502/504 errors from FastAPI
-
-**Diagnosis:**
-```bash
-# Check Ollama is running
-curl http://localhost:11434/api/tags
-
-# Check if model is downloaded
-ollama list
-```
-
-**Solution:**
-```bash
-# Start Ollama
-ollama serve
-
-# Pull the model
-ollama pull llama3.2:3b
-
-# Or use Docker
-docker compose up -d ollama
-```
-
 ## Problem: Dependencies Not Installed
 
-### Frontend
 ```bash
 cd /home/sean/git_wsl/gentle-disagree/frontend
 bun install
-```
-
-### Backend
-```bash
-cd /home/sean/git_wsl/gentle-disagree/backend
-uv sync
 ```
 
 ## Problem: TypeScript Errors
@@ -88,17 +35,6 @@ bun run typecheck
 
 # Fix lint issues
 bun run lint
-```
-
-## Problem: Python Lint Errors
-
-**Solution:**
-```bash
-cd /home/sean/git_wsl/gentle-disagree/backend
-
-# Check and fix
-uv run ruff check --fix .
-uv run ruff format .
 ```
 
 ## Problem: Docker Compose Issues
@@ -115,10 +51,6 @@ docker compose up -d --build
 docker compose down
 docker compose up -d
 ```
-
-**Ollama out of memory:**
-- Increase Docker memory limit in Docker Desktop settings
-- Use a smaller model: `OLLAMA_MODEL=llama3.2:1b`
 
 ## Best Practices
 
