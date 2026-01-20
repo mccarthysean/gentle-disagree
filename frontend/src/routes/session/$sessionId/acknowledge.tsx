@@ -155,6 +155,33 @@ function AcknowledgePage() {
         ))}
       </section>
 
+      {/* Helpful repair phrases */}
+      <section className="space-y-2">
+        <p className="text-sm text-text-muted text-center">
+          Repair phrases that can help:
+        </p>
+        <div className="flex flex-wrap gap-2 justify-center">
+          <button
+            className="phrase-chip text-xs"
+            onClick={() => setAcknowledgment("Let me try again. ")}
+          >
+            "Let me try again"
+          </button>
+          <button
+            className="phrase-chip text-xs"
+            onClick={() => setAcknowledgment("I can see my part in this. ")}
+          >
+            "I can see my part in this"
+          </button>
+          <button
+            className="phrase-chip text-xs"
+            onClick={() => setAcknowledgment("How can I make things better? ")}
+          >
+            "How can I make things better?"
+          </button>
+        </div>
+      </section>
+
       {/* Response input */}
       <section className="card space-y-4">
         <label
@@ -179,41 +206,6 @@ function AcknowledgePage() {
           className="textarea"
           rows={4}
         />
-      </section>
-
-      {/* Helpful repair phrases */}
-      <section className="space-y-2">
-        <p className="text-sm text-text-muted text-center">
-          Repair phrases that can help:
-        </p>
-        <div className="flex flex-wrap gap-2 justify-center">
-          <button
-            className="phrase-chip text-xs"
-            onClick={() =>
-              setAcknowledgment((prev) => prev + " Let me try again.")
-            }
-          >
-            "Let me try again"
-          </button>
-          <button
-            className="phrase-chip text-xs"
-            onClick={() =>
-              setAcknowledgment((prev) => prev + " I can see my part in this.")
-            }
-          >
-            "I can see my part in this"
-          </button>
-          <button
-            className="phrase-chip text-xs"
-            onClick={() =>
-              setAcknowledgment(
-                (prev) => prev + " How can I make things better?",
-              )
-            }
-          >
-            "How can I make things better?"
-          </button>
-        </div>
       </section>
 
       {/* Affirmation */}
