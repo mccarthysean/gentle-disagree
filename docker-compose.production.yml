@@ -3,6 +3,11 @@ services:
     image: ghcr.io/${GITHUB_REPOSITORY_OWNER:-mccarthysean}/gentle-disagree-frontend:${IMAGE_TAG:-latest}
     deploy:
       replicas: 2
+      resources:
+        limits:
+          memory: 256M # Typical ~40 MiB per replica; generous cap as last-resort OOM protection
+        reservations:
+          memory: 64M
       update_config:
         parallelism: 1
         delay: 10s
