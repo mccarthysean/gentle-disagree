@@ -16,7 +16,6 @@ function ReadinessPage() {
     loading,
     currentPartnerName,
     currentPartnerLetter,
-    otherPartnerName,
     updatePartnerA,
     nextStep,
     getStepInfo,
