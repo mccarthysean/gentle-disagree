@@ -80,3 +80,16 @@ gentle-disagree/
 - Use `bun` for frontend package management (not npm)
 - All routes use TanStack Router file-based routing
 - localStorage key: `gentle-disagree-sessions`
+
+
+## Tool Usage — Native Tools First
+
+Prefer native Claude Code tools over Bash — they need no permission prompts:
+- **Read files**: `Read` tool, not `cat`/`head`/`tail`
+- **Write files**: `Write` tool, not heredocs or `echo >`
+- **Edit files**: `Edit` tool, not `sed`/`awk`
+- **Find files**: `Glob` tool, not `find`/`ls`
+- **Search content**: `Grep` tool, not `grep`/`rg`
+- **JSON data**: `Read` + `Edit` tools, not `jq`
+
+Reserve `Bash` for commands that genuinely need the shell: `git`, `uv`, `bun`, `curl`, `docker`, `nc`, etc.
