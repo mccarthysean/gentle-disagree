@@ -237,7 +237,6 @@
       "Bash(git branch -d *)",
       "Bash(git branch -D *)",
       "Bash(git branch --delete *)",
-      "Bash(kill:*)",
       "Bash(pkill:*)",
       "Bash(npm install:*)",
       "Bash(yarn add:*)",
