@@ -75,6 +75,16 @@ gentle-disagree/
 └── docker-compose.yml
 ```
 
+## Deployment
+
+- Frontend only: Cloudflare Pages project `gentle-disagree`.
+- `.github/workflows/ci.yml` validates pull requests and deploys `frontend/dist`
+  on pushes to main or manual dispatches on main.
+- Required GitHub secrets: `CLOUDFLARE_ACCOUNT_ID`, `CLOUDFLARE_API_TOKEN`.
+- Preserve the public HTTPS origin so existing localStorage sessions remain accessible.
+- `docker-compose.production.yml` is historical Swarm configuration, not the release path.
+- 2026-10-19 evidence: the workflow now uploads static assets directly to Pages; no backend or database was added.
+
 ## Important Notes
 
 - Use `bun` for frontend package management (not npm)

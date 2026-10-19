@@ -60,6 +60,23 @@ bun run lint         # Run ESLint
 bun run typecheck    # TypeScript check
 ```
 
+## Hosting
+
+The frontend is deployed independently to Cloudflare Pages by
+`.github/workflows/ci.yml`. Pull requests run lint, typecheck and a production
+build. Pushes to `main` and manual dispatches on `main` upload the built
+`frontend/dist` assets to the `gentle-disagree` Pages project.
+
+The project must exist in the intended Cloudflare account, with repository
+secrets `CLOUDFLARE_ACCOUNT_ID` and `CLOUDFLARE_API_TOKEN` (Pages Edit).
+Configure `gentledisagree.space` and `www.gentledisagree.space` as custom
+domains and update their DNS through the personal hosting configuration.
+
+Pages provides the SPA fallback because the build has no top-level `404.html`.
+Keep the public HTTPS origin stable: browser storage belongs to its origin,
+so sessions on `gentledisagree.space` are not shared with preview URLs or www.
+No API, database, container registry or RCOM release is required.
+
 ## Privacy
 
 This app is designed with privacy as the top priority:
