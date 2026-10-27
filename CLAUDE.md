@@ -83,7 +83,9 @@ gentle-disagree/
 - Required GitHub secrets: `CLOUDFLARE_ACCOUNT_ID`, `CLOUDFLARE_API_TOKEN`.
 - Preserve the public HTTPS origin so existing localStorage sessions remain accessible.
 - `docker-compose.production.yml` is historical Swarm configuration, not the release path.
-- 2026-10-19 evidence: the workflow now uploads static assets directly to Pages; no backend or database was added.
+- Load `.claude/skills/github-actions-deployment/SKILL.md` for workflow, preview and release checks; Codex uses the matching `.agents/skills` symlink. There is no path filter, so a docs-only main merge also deploys Pages.
+- No Railway service/server database or database MCP route belongs to this app. The [central hosting guide](https://github.com/mccarthysean/personal-websites-hosting/blob/main/railway/README.md) covers shared Pages/domain operations; its backend/DB procedures apply to other sites. Preserve existing localStorage and the canonical origin; never clear real conversations during QA.
+- 2026-10-26 source check: current `ci.yml` uploads static assets directly to Pages; `frontend/src/lib/storage.ts` remains device-only. No backend or database was added.
 
 ## Important Notes
 

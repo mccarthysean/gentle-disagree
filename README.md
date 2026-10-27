@@ -77,6 +77,8 @@ Keep the public HTTPS origin stable: browser storage belongs to its origin,
 so sessions on `gentledisagree.space` are not shared with preview URLs or www.
 No API, database, container registry or RCOM release is required.
 
+Read the [deployment skill](.claude/skills/github-actions-deployment/SKILL.md) for exact event/job/artifact checks and the [personal hosting guide](https://github.com/mccarthysean/personal-websites-hosting/blob/main/railway/README.md) for Pages/domain boundaries. There is no workflow path filter: documentation-only main merges also deploy Pages. No Railway backend or database access should be provisioned for this app. The current storage contract is `frontend/src/lib/storage.ts`; existing browser data must stay intact during releases and QA.
+
 ## Privacy
 
 This app is designed with privacy as the top priority:
